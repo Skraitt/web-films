@@ -1,4 +1,11 @@
+$purplePlatzi: #AB88FF;
+
 body {
-    background-color: red;
-    color: blue;
+    margin: 0px;
+    font-family: 'Muli', sans-serif;
+    background-color: $purplePlatzi;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }

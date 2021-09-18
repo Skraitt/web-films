@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -17,6 +16,12 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx'],
+    alias: {
+      '@containers': path.resolve(__dirname, 'src/containers/'),
+      '@styles': path.resolve(__dirname, 'src/assets/styles/'),
+      '@images': path.resolve(__dirname, 'src/assets/images/'),
+      '@components': path.resolve(__dirname, 'src/components/'),
+    },
   },
   module: {
     rules: [
@@ -44,6 +49,17 @@ module.exports = {
         ],
       },
       {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            'loader': 'file-loader',
+            options: {
+              'name': 'assets/[contenthash].[ext]',
+            },
+          },
+        ],
+      },
+      {
         test: /\.(woff|woff2)$/,
         use: {
           loader: 'url-loader',
@@ -66,14 +82,6 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'assets/[name].css',
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'src', 'assets/images'),
-          to: 'assets/images',
-        },
-      ],
     }),
     new Dotenv(),
     new CleanWebpackPlugin(),

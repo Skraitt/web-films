@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+//const CopyPlugin = require('copy-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
@@ -12,10 +12,16 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    assetModuleFilename: 'assets/image/[hash][ext][query]',
   },
+  mode: 'production',
   resolve: {
     extensions: ['.js', '.jsx'],
+    alias: {
+      '@containers': path.resolve(__dirname, 'src/containers/'),
+      '@styles': path.resolve(__dirname, 'src/assets/styles/'),
+      '@images': path.resolve(__dirname, 'src/assets/images/'),
+      '@components': path.resolve(__dirname, 'src/components/'),
+    },
   },
   module: {
     rules: [
@@ -43,6 +49,17 @@ module.exports = {
         ],
       },
       {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            'loader': 'file-loader',
+            options: {
+              'name': 'assets/[contenthash].[ext]',
+            },
+          },
+        ],
+      },
+      {
         test: /\.(woff|woff2)$/,
         use: {
           loader: 'url-loader',
@@ -66,14 +83,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'assets/[name].css',
     }),
-    new CopyPlugin({
+    /*     new CopyPlugin({
       patterns: [
         {
           from: path.resolve(__dirname, 'src', 'assets/images'),
           to: 'assets/images',
         },
       ],
-    }),
+    }), */
     new Dotenv(),
     new CleanWebpackPlugin(),
   ],
