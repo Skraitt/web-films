@@ -1,9 +1,10 @@
-$purplePlatzi: #AB88FF;
+@import './Vars.scss';
+@import './Media.scss';
 
 body {
     margin: 0px;
-    font-family: 'Muli', sans-serif;
-    background-color: $purplePlatzi;
+    background: $main-color;
+    font-family: $theme-font;
 }
 
 ::-webkit-scrollbar {
